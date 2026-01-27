@@ -1,3 +1,9 @@
+## 5.4.0
+
+- Add Search feature on the request details page.
+
+Special thanks to [amirbahrawy](https://github.com/amirbahrawy) and [Nourhan Sabrii](https://github.com/NourSabry) for this amazing contribution! 🎉
+
 ## 5.3.0
 
 - New Search and Filters for Requests List.
