@@ -153,8 +153,6 @@ class RequestDetailsPage extends StatelessWidget {
         return Selector<InspectorController, int>(
           selector: (_, controller) => controller.currentMatchIndex,
           builder: (context, currentMatchIndex, _) {
-            final isUrlActive = currentMatchIndex >= timeAndUrlOffset &&
-                currentMatchIndex < timeAndUrlOffset + timeAndUrlMatches;
             final isHeadersActive = currentMatchIndex >= headersOffset &&
                 currentMatchIndex < headersOffset + headersMatches;
             final isQueryParamsActive =
@@ -176,7 +174,6 @@ class RequestDetailsPage extends StatelessWidget {
                 _buildExpandableSection(
                   context: context,
                   txtCopy: JsonPrettyConverter().convert(request.url),
-                  initiallyExpanded: isUrlActive,
                   titleWidget: _buildRequestNameAndStatus(
                     method: request.requestMethod,
                     requestName: request.requestName,
@@ -198,14 +195,13 @@ class RequestDetailsPage extends StatelessWidget {
                     context: context,
                     txtCopy: headersPretty,
                     title: 'Headers',
-                    initiallyExpanded: isHeadersActive,
                     children: _buildDataBlock(
                       request.headers,
                       isTreeView: state.isTreeView,
                       isDarkMode: state.isDarkMode,
                       searchQuery: query,
                       matchIndexOffset: headersOffset,
-                      expandChildren: state.expandChildren,
+                      expandChildren: state.expandChildren || isHeadersActive,
                     ),
                   ),
                 if (request.queryParameters != null)
@@ -213,14 +209,14 @@ class RequestDetailsPage extends StatelessWidget {
                     context: context,
                     txtCopy: queryParamsPretty,
                     title: 'Query Parameters',
-                    initiallyExpanded: isQueryParamsActive,
                     children: _buildDataBlock(
                       request.queryParameters,
                       isTreeView: state.isTreeView,
                       isDarkMode: state.isDarkMode,
                       searchQuery: query,
                       matchIndexOffset: queryParamsOffset,
-                      expandChildren: state.expandChildren,
+                      expandChildren:
+                          state.expandChildren || isQueryParamsActive,
                     ),
                   ),
                 if (request.requestBody != null)
@@ -229,14 +225,14 @@ class RequestDetailsPage extends StatelessWidget {
                     txtCopy: requestBodyPretty,
                     title:
                         'Request Body${request.requestBody is FormData ? " (Form Data)" : ""}',
-                    initiallyExpanded: isRequestBodyActive,
                     children: _buildDataBlock(
                       request.requestBody,
                       isTreeView: state.isTreeView,
                       isDarkMode: state.isDarkMode,
                       searchQuery: query,
                       matchIndexOffset: requestBodyOffset,
-                      expandChildren: state.expandChildren,
+                      expandChildren:
+                          state.expandChildren || isRequestBodyActive,
                     ),
                   ),
                 if (request.graphqlRequestVars != null)
@@ -244,14 +240,13 @@ class RequestDetailsPage extends StatelessWidget {
                     context: context,
                     txtCopy: graphqlVarsPretty,
                     title: 'GraphQL Request Vars',
-                    initiallyExpanded: isGraphqlActive,
                     children: _buildDataBlock(
                       request.graphqlRequestVars,
                       isTreeView: state.isTreeView,
                       isDarkMode: state.isDarkMode,
                       searchQuery: query,
                       matchIndexOffset: graphqlVarsOffset,
-                      expandChildren: state.expandChildren,
+                      expandChildren: state.expandChildren || isGraphqlActive,
                     ),
                   ),
                 if (request.responseBody != null)
@@ -259,14 +254,14 @@ class RequestDetailsPage extends StatelessWidget {
                     context: context,
                     txtCopy: responseBodyPretty,
                     title: 'Response Body',
-                    initiallyExpanded: isResponseBodyActive,
                     children: _buildDataBlock(
                       request.responseBody,
                       isTreeView: state.isTreeView,
                       isDarkMode: state.isDarkMode,
                       searchQuery: query,
                       matchIndexOffset: responseBodyOffset,
-                      expandChildren: state.expandChildren,
+                      expandChildren:
+                          state.expandChildren || isResponseBodyActive,
                     ),
                   ),
               ],
