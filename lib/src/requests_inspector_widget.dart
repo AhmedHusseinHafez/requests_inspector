@@ -68,16 +68,19 @@ class RequestsInspector extends StatelessWidget {
                     InspectorController().pageController.page == 0,
                 child: GestureDetector(
                   onLongPress: _showInspectorOn != ShowInspectorOn.Shaking
-                      ? InspectorController().showInspector
+                      ? () {
+                          Navigator.push(
+                            _navigatorKey!.currentContext!,
+                            PageRouteBuilder(
+                              transitionDuration: Duration.zero,
+                              reverseTransitionDuration: Duration.zero,
+                              pageBuilder: (_, __, ___) =>
+                                  Inspector(navigatorKey: _navigatorKey),
+                            ),
+                          );
+                        }
                       : null,
-                  child: PageView(
-                    controller: InspectorController().pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      _child,
-                      Inspector(navigatorKey: _navigatorKey),
-                    ],
-                  ),
+                  child: _child,
                 ),
               );
             },
