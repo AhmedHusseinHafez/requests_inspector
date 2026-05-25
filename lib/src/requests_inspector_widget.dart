@@ -18,7 +18,7 @@ class RequestsInspector extends StatelessWidget {
     ShowInspectorOn showInspectorOn = ShowInspectorOn.Both,
     required Widget child,
     bool defaultTreeViewEnabled = true,
-    GlobalKey<NavigatorState>? navigatorKey,
+    required GlobalKey<NavigatorState> navigatorKey,
     bool defaultExpandChildren = true,
     bool defaultIsDarkMode = true,
   })  : _enabled = enabled,
@@ -74,8 +74,10 @@ class RequestsInspector extends StatelessWidget {
                             PageRouteBuilder(
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
-                              pageBuilder: (_, __, ___) =>
-                                  Inspector(navigatorKey: _navigatorKey),
+                              pageBuilder: (_, __, ___) => Directionality(
+                                  textDirection: TextDirection.ltr,
+                                  child:
+                                      Inspector(navigatorKey: _navigatorKey)),
                             ),
                           );
                         }
@@ -96,7 +98,7 @@ class RequestsInspector extends StatelessWidget {
       );
     }
 
-    return Directionality(textDirection: TextDirection.ltr, child: widget);
+    return widget;
   }
 
   bool _isSupportShaking() =>
